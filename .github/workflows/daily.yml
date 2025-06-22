@@ -1,27 +1,26 @@
-name: Daily Commit
+name: Daily commits by 23ds3000079@ds.study.iitm.ac.in
 
 on:
   schedule:
-    - cron: '15 4 * * *'  # Runs daily at 4:15 UTC
-  workflow_dispatch:
+    # Runs at 00:00 UTC every day
+    - cron: "0 0 * * *"
+  workflow_dispatch: # Allow manual triggers
 
 jobs:
-  daily-update:
+  committing:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Daily commit step by 23ds3000079@ds.study.iitm.ac.in
-        env:
-          TOKEN: ${{ secrets.GH_PAT }}
+      - name: Commit as 23ds3000079@ds.study.iitm.ac.in
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          echo "Run on $(date -u)" >> daily-log.txt
-
-          git add daily-log.txt
-          git commit -m "Automated daily update at $(date -u)" || echo "No changes to commit"
-          git push https://x-access-token:$TOKEN@github.com/${{ github.repository }}.git HEAD:main
+          echo "Daily update: $(date)" >> daily_log.txt
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add daily_log.txt
+          git commit -m "Daily commit: $(date)" || echo "No changes to commit"
+          git push || echo "Nothing to push"

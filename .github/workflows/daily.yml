@@ -1,0 +1,13 @@
+name: Daily Action
+
+on:
+  schedule:
+    - cron: '30 3 * * *'  # Runs daily at 03:30 UTC
+  workflow_dispatch:
+
+jobs:
+  run-daily:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print date
+        run: echo "Running daily at $(date -u)"
